@@ -6,11 +6,11 @@ export type ProductType = {
   title: string;
   image: string;
   price: number;
-  oldPrice: number;
-  discountPercent: number;
+  oldPrice?: number;
+  discountPercent?: number;
   rating: number;
   reviewsCount: number;
   count?: number;
-  isFavorite: boolean;
+  isFavorite?: boolean;
   available: boolean;
 };

@@ -1,10 +1,47 @@
 /** @format */
 
-// Форму можна покращити. Але повинна зараз працювати (Форма поки що нічого не створює)
+import type { ProductType } from "@/homeworks/dz3/types/ProductType";
+import { useState, type ChangeEvent, type SubmitEvent } from "react";
 
-const CreateProduct = () => {
+type Props = {
+  products: ProductType[];
+  setProduct: (product: ProductType) => void;
+};
+
+const CreateProduct = ({ products, setProduct }: Props) => {
+  const [isAvailable, setIsAvailable] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>("");
+  const [imgURL, setImgURL] = useState<string>("");
+  const [price, setPrice] = useState("");
+  const [oldPrice, setOldPrice] = useState("");
+  const [rating, setRating] = useState("");
+  const [reviewsCount, setReviewsCount] = useState("");
+
+  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newId =
+      products.length > 0
+        ? Math.max(...products.map((product) => product.id)) + 1
+        : 1;
+
+    const newProduct: ProductType = {
+      id: newId,
+      title,
+      image: imgURL,
+      price: Number(price),
+      oldPrice: Number(oldPrice),
+      rating: parseFloat(rating),
+      reviewsCount: Number(reviewsCount),
+      available: isAvailable,
+    };
+
+    setProduct(newProduct);
+  };
+
   return (
     <form
+      onSubmit={handleSubmit}
       className="
         w-full max-w-2xl mx-auto
         bg-white
@@ -27,7 +64,11 @@ const CreateProduct = () => {
 
           <input
             type="text"
+            value={title}
             placeholder="Наприклад: JBL GO 3"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setTitle(e.target.value)
+            }
             className="
               rounded-xl
               border border-gray-200
@@ -50,7 +91,11 @@ const CreateProduct = () => {
 
           <input
             type="text"
-            placeholder="https://..."
+            value={imgURL}
+            placeholder="https://example.com/image"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setImgURL(e.target.value)
+            }
             className="
               rounded-xl
               border border-gray-200
@@ -75,7 +120,11 @@ const CreateProduct = () => {
 
           <input
             type="number"
+            value={price}
             placeholder="549"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setPrice(e.target.value)
+            }
             className="
               rounded-xl
               border border-gray-200
@@ -98,7 +147,11 @@ const CreateProduct = () => {
 
           <input
             type="number"
+            value={oldPrice}
             placeholder="899"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setOldPrice(e.target.value)
+            }
             className="
               rounded-xl
               border border-gray-200
@@ -121,9 +174,14 @@ const CreateProduct = () => {
 
           <input
             type="number"
-            min={1}
+            step={0.1}
+            min={0}
             max={5}
+            value={rating}
             placeholder="5"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setRating(e.target.value)
+            }
             className="
               rounded-xl
               border border-gray-200
@@ -146,7 +204,12 @@ const CreateProduct = () => {
 
           <input
             type="number"
+            min={0}
+            value={reviewsCount}
             placeholder="24"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setReviewsCount(e.target.value)
+            }
             className="
               rounded-xl
               border border-gray-200
@@ -167,6 +230,10 @@ const CreateProduct = () => {
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
+            checked={isAvailable}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setIsAvailable(e.target.checked)
+            }
             className="
               h-4 w-4
               accent-red-500
@@ -174,18 +241,6 @@ const CreateProduct = () => {
           />
 
           <span className="text-gray-700">В наявності</span>
-        </label>
-
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="checkbox"
-            className="
-              h-4 w-4
-              accent-red-500
-            "
-          />
-
-          <span className="text-gray-700">В обраному</span>
         </label>
       </div>
 
