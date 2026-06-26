@@ -4,11 +4,13 @@ import HeartIcon from "@/shared/icons/heart.svg?react";
 
 type Props = {
   isFavorite: boolean;
+  onClick: () => void;
 };
 
-export default function FavoriteButton({ isFavorite }: Props) {
+export default function FavoriteButton({ isFavorite, onClick }: Props) {
   return (
     <button
+      onClick={onClick}
       className="
         absolute top-3 right-3
         p-1 rounded-md

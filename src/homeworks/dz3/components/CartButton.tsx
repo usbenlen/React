@@ -2,9 +2,14 @@
 
 import CartIcon from "@/shared/icons/cart.svg?react";
 
-export default function CartButton() {
+type Props = {
+  onClick: () => void;
+};
+
+export default function CartButton({ onClick }: Props) {
   return (
     <button
+      onClick={onClick}
       className="
         group flex items-center
         bg-red-500 text-white

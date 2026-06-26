@@ -9,14 +9,22 @@ type Props = {
 export default function RatingStars({ rating }: Props) {
   return (
     <div className="flex gap-px">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <StarIcon
-          key={i}
-          className={`w-3.5 h-3.5
-            ${i < rating ? "text-yellow-400" : "text-gray-200"}
-          `}
-        />
-      ))}
+      {Array.from({ length: 5 }).map((_, i) => {
+        const fill = Math.max(0, Math.min(1, rating - i));
+
+        return (
+          <div key={i} className="relative w-3.5 h-3.5">
+            <StarIcon className="absolute inset-0 w-full h-full text-gray-200" />
+
+            <div
+              className="absolute inset-0 overflow-hidden"
+              style={{ width: `${fill * 100}%` }}
+            >
+              <StarIcon className="w-3.5 h-3.5 text-yellow-400" />
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

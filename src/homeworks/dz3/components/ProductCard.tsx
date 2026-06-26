@@ -7,11 +7,30 @@ import CartButton from "@/homeworks/dz3/components/CartButton";
 import RatingStars from "@/homeworks/dz3/components/RatingStars";
 import Reviews from "@/homeworks/dz3/components/Reviews";
 
+import { useState } from "react";
+import {
+  addToCart,
+  toggleFavorite,
+  getFavorites,
+} from "@/homeworks/dz3/utils/localStorage";
+
 type Props = {
   product: ProductType;
 };
 
 export default function ProductCard({ product }: Props) {
+  const [favorites, setFavorites] = useState<number[]>(() => getFavorites());
+  const isFavorite = favorites.includes(product.id);
+
+  const handleFavorite = () => {
+    toggleFavorite(product.id);
+    setFavorites(getFavorites());
+  };
+
+  const handleCart = () => {
+    addToCart(product.id);
+  };
+
   return (
     <div
       className="
@@ -27,11 +46,13 @@ export default function ProductCard({ product }: Props) {
         hover:z-20
       "
     >
-      <FavoriteButton isFavorite={product.isFavorite} />
+      <FavoriteButton isFavorite={isFavorite} onClick={handleFavorite} />
 
       <div className="flex justify-center">
         <img
           src={product.image}
+          alt={product.title}
+          loading="lazy"
           className="
             h-40 object-contain
             transition-transform duration-300
@@ -65,7 +86,7 @@ export default function ProductCard({ product }: Props) {
         </div>
 
         <div className="flex items-end">
-          <CartButton />
+          <CartButton onClick={handleCart} />
         </div>
       </div>
     </div>
